@@ -1,4 +1,22 @@
+require("dotenv").config();
+
+const express = require("express");
+const OpenAI = require("openai");
+
+const app = express();
+
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 app.use(express.json({ limit: "1mb" }));
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Student Expense AI backend is running."
+  });
+});
 
 app.post("/recommendation", async (req, res) => {
   try {
@@ -141,4 +159,11 @@ Return the structured recommendation data only.
       message: "Failed to generate recommendations. Please try again.",
     });
   }
+});
+
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Student Expense AI backend running on port ${PORT}`);
 });
